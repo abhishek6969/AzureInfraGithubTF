@@ -42,7 +42,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
 
   data_flow {
     streams      = ["Microsoft-InsightsMetrics","Microsoft-Perf"]
-    destinations = ["example-log-analytics"]
+    destinations = [azurerm_log_analytics_workspace.test-law-lirook.name]
   }
 
   description = "Data collection rule for performance counters"
