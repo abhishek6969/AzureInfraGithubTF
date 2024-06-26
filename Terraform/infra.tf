@@ -20,10 +20,6 @@ resource "azurerm_monitor_data_collection_rule" "example" {
       workspace_resource_id = azurerm_log_analytics_workspace.test-law-lirook.id
       name                  = "example-log-analytics"
     }
-
-    azure_monitor_metrics {
-      name = "example-metrics"
-    }
   }
 
   data_sources {
@@ -47,10 +43,6 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   data_flow {
     streams      = ["Microsoft-InsightsMetrics"]
     destinations = ["example-log-analytics"]
-  }
-  data_flow {
-    streams      = ["Microsoft-InsightsMetrics"]
-    destinations = ["example-metrics"]
   }
 
   description = "Data collection rule for performance counters"
