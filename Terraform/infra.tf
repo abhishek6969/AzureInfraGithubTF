@@ -29,7 +29,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   data_sources {
     performance_counter {
       name                          = "example-perf-counter"
-      streams                       = ["Microsoft-InsightsMetrics","Microsoft-Perf"]
+      streams                       = ["Microsoft-InsightsMetrics"]
       sampling_frequency_in_seconds = 60
       counter_specifiers = [
         "LogicalDisk(*)\\% Free Space",
@@ -45,7 +45,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   }
 
   data_flow {
-    streams      = ["Microsoft-Perf"]
+    streams      = ["Microsoft-InsightsMetrics"]
     destinations = ["example-log-analytics"]
   }
   data_flow {
