@@ -18,7 +18,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   destinations {
     log_analytics {
       workspace_resource_id = azurerm_log_analytics_workspace.test-law-lirook.id
-      name                  = "example-log-analytics"
+      name                  = azurerm_log_analytics_workspace.test-law-lirook.name
     }
   }
 
