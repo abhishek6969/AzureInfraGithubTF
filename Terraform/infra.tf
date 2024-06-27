@@ -20,12 +20,15 @@ resource "azurerm_monitor_data_collection_rule" "example" {
       workspace_resource_id = azurerm_log_analytics_workspace.test-law-lirook.id
       name                  = azurerm_log_analytics_workspace.test-law-lirook.name
     }
+    azure_monitor_metrics {
+      name = "azureMonitorMetrics-default"
+    }
   }
 
   data_sources {
     performance_counter {
       name                          = "perfCounterDataSource60"
-      streams                       = ["Microsoft-Perf"]
+      streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
       sampling_frequency_in_seconds = 60
       counter_specifiers = [
         "LogicalDisk(*)\\% Free Space",
@@ -43,6 +46,13 @@ resource "azurerm_monitor_data_collection_rule" "example" {
     destinations = [azurerm_log_analytics_workspace.test-law-lirook.name]
     transform_kql = "source"
     output_stream = "Microsoft-Perf"
+  }
+
+  data_flow {
+    streams      = ["Microsoft-InsightsMetrics"]
+    destinations = ["azureMonitorMetrics-default"]
+    transform_kql = "source"
+    output_stream = "Microsoft-InsightsMetrics"
   }
 
   description = "Data collection rule for performance counters"
