@@ -160,3 +160,50 @@ resource "azurerm_automation_hybrid_runbook_worker_group" "lirook-workers" {
   automation_account_name = azurerm_automation_account.lirookAutomation.name
 }
 
+resource "azurerm_monitor_data_collection_rule" "dcr-change-tracking" {
+    name                = "dcr-change-tracking"
+    resource_group_name = azurerm_resource_group.azureInfra.name
+    location            = azurerm_resource_group.azureInfra.location
+    description         = "Data collection rule for Change Tracking."
+
+    data_flow {
+        streams      = [
+            "Microsoft-ConfigurationChange",
+            "Microsoft-ConfigurationChangeV2",
+            "Microsoft-ConfigurationData"
+        ]
+        destinations = [
+            azurerm_log_analytics_workspace.test-law-lirook.name,
+        ]
+    }
+
+    data_sources {
+        extension {
+            extension_name     = "ChangeTracking-Windows"
+            name               = "CTDataSource-Windows"
+            streams            = [
+                "Microsoft-ConfigurationChange",
+                "Microsoft-ConfigurationChangeV2",
+                "Microsoft-ConfigurationData"
+            ]
+        }
+        extension {
+            extension_name     = "ChangeTracking-Linux"
+            input_data_sources = []
+            name               = "CTDataSource-Linux"
+            streams            = [
+                "Microsoft-ConfigurationChange",
+                "Microsoft-ConfigurationChangeV2",
+                "Microsoft-ConfigurationData"
+            ]
+        }
+    }
+
+    destinations {
+        log_analytics {
+            workspace_resource_id = azurerm_log_analytics_workspace.test-law-lirook.id
+            name                  = azurerm_log_analytics_workspace.test-law-lirook.name
+        }
+    }
+}
+
