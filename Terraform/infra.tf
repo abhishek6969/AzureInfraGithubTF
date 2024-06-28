@@ -31,7 +31,7 @@ resource "azurerm_monitor_data_collection_rule" "example" {
       streams                       = ["Microsoft-Perf", "Microsoft-InsightsMetrics"]
       sampling_frequency_in_seconds = 60
       counter_specifiers = [
-        "Logical Disk(*)\\% Free Space",
+        "\\LogicalDisk(*)\\% Free Space",
         "Memory(*)\\% Available Memory",
         "\\Processor Information(_Total)\\% Processor Time",
         "\\System\\System Up Time",
