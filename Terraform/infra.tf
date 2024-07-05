@@ -435,16 +435,26 @@ resource "azurerm_automation_runbook" "example" {
   runbook_type            = "PowerShell"
 
   content = <<-EOT
+  # Get the name of the local machine
   $ComputerName = $env:COMPUTERNAME
 
-  $lastPatch = Get-HotFix -ComputerName $ComputerName | Sort-Object -Property InstalledOn | Select-Object -Last 1
+  # Get all installed updates
+  $hotfixes = Get-HotFix -ComputerName $ComputerName
+
+  # Filter for critical and security updates
+  $criticalSecurityHotfixes = $hotfixes | Where-Object {
+      $_.Description -match "Security Update" -or
+      $_.Description -match "Critical Update"
+  }
+
+  # Sort by installation date and get the latest one
+  $lastPatch = $criticalSecurityHotfixes | Sort-Object -Property InstalledOn | Select-Object -Last 1
 
   if ($lastPatch) {
-      Write-Output "The last patch was installed on: $($lastPatch.InstalledOn)"
+      Write-Output "The last critical or security patch on $ComputerName was installed on: $($lastPatch.InstalledOn)"
   } else {
-      Write-Output "No patches found."
+      Write-Output "No critical or security patches found on $ComputerName."
   }
   EOT
 }
-
 
