@@ -159,7 +159,6 @@ resource "azurerm_automation_hybrid_runbook_worker_group" "lirook-workers" {
   resource_group_name     = azurerm_resource_group.azureInfra.name
   automation_account_name = azurerm_automation_account.lirookAutomation.name
 }
-
 resource "azurerm_monitor_data_collection_rule" "dcr-CT" {
   name                = "dcr-CT"
   resource_group_name = azurerm_resource_group.azureInfra.name
