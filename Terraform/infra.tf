@@ -419,6 +419,34 @@ resource "azurerm_monitor_data_collection_rule" "dcr-CT" {
       name                  = "Microsoft-CT-Dest"
     }
   }
+  depends_on = [
+    azurerm_log_analytics_linked_service.example,
+    azurerm_log_analytics_solution.example
+  ]
+}
+resource "azurerm_automation_runbook" "example" {
+  name                    = "Get-ServerLastPatchDate"
+  location                = azurerm_resource_group.azureInfra.location
+  resource_group_name     = azurerm_resource_group.azureInfra.name
+  automation_account_name = azurerm_automation_account.lirookAutomation.name
+  log_verbose             = "true"
+  log_progress            = "true"
+  description             = "This runbook gets the date when the server was last patched."
+  runbook_type            = "PowerShell"
+
+  content = <<-EOT
+  param (
+      [string]$ComputerName = 'localhost'
+  )
+
+  $lastPatch = Get-HotFix -ComputerName $ComputerName | Sort-Object -Property InstalledOn | Select-Object -Last 1
+
+  if ($lastPatch) {
+      Write-Output "The last patch was installed on: $($lastPatch.InstalledOn)"
+  } else {
+      Write-Output "No patches found."
+  }
+  EOT
 }
 
 
