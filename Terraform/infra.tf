@@ -435,9 +435,7 @@ resource "azurerm_automation_runbook" "example" {
   runbook_type            = "PowerShell"
 
   content = <<-EOT
-  param (
-      [string]$ComputerName = 'localhost'
-  )
+  $ComputerName = $env:COMPUTERNAME
 
   $lastPatch = Get-HotFix -ComputerName $ComputerName | Sort-Object -Property InstalledOn | Select-Object -Last 1
 
