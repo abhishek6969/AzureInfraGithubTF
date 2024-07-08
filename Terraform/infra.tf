@@ -458,3 +458,13 @@ resource "azurerm_automation_runbook" "example" {
   EOT
 }
 
+resource "azurerm_monitor_action_group" "LirookAG" {
+  name                = "LirookAG"
+  resource_group_name = azurerm_resource_group.azureInfra.name
+  short_name = "LirookAG"
+  email_receiver {
+    name = "lirook-email-reciever"
+    email_address = "lirooksunkale@outlook.com"
+  }
+
+}
