@@ -468,3 +468,44 @@ resource "azurerm_monitor_action_group" "LirookAG" {
   }
 
 }
+
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "LirookDiskSpaceAlert" {
+  name                = "LirookDiskSpaceAlert"
+  resource_group_name = azurerm_resource_group.azureInfra.name
+  location            = azurerm_resource_group.azureInfra.location
+
+  evaluation_frequency = "PT10M"
+  window_duration      = "PT10M"
+  scopes               = [azurerm_log_analytics_workspace.test-law-lirook.id]
+  severity             = 2
+  criteria {
+    query = <<-QUERY
+      Perf
+      | where ObjectName == "LogicalDisk" and CounterName == "% Free Space"
+      or ObjectName == "Logical Disk" and CounterName == "% Free Space"
+      | where InstanceName != "D:" and InstanceName !contains "HarddiskVolume" and InstanceName !contains "_Total"
+      | summarize AggregatedValue = min(CounterValue) by InstanceName
+    QUERY
+    time_aggregation_method = "Minimum"
+    threshold               = 95
+    operator                = "LessThan"
+
+    resource_id_column    = "InstanceName"
+    metric_measure_column = "AggregatedValue"
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
+  auto_mitigation_enabled          = true
+  workspace_alerts_storage_enabled = false
+  description                      = "Alert for low disk space"
+  display_name                     = "Disk Space Alert"
+  enabled                          = true
+  query_time_range_override        = "PT1H"
+  skip_query_validation            = true
+  action {
+    action_groups = [azurerm_monitor_action_group.LirookAG.id]
+  }
+}
