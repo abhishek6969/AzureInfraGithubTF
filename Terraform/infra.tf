@@ -58,8 +58,8 @@ resource "azurerm_monitor_data_collection_rule" "example" {
   description = "Data collection rule for performance counters"
 }
 
-resource "azurerm_automation_account" "lirookAutomation" {
-  name                = "lirookAutomation"
+resource "azurerm_automation_account" "lirookAutomation1" {
+  name                = "lirookAutomation1"
   resource_group_name = azurerm_resource_group.azureInfra.name
   location            = azurerm_resource_group.azureInfra.location
   sku_name            = "Basic"
