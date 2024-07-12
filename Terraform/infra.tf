@@ -1,7 +1,4 @@
-resource "azurerm_resource_group" "azureInfra" {
-  name     = "azureInfra"
-  location = "West Europe"
-}
+
 
 resource "azurerm_log_analytics_workspace" "test-law-lirook" {
   name                = "test-law-lirook"
