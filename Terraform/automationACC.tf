@@ -5,7 +5,6 @@ resource "azurerm_automation_account" "lirookAutomation" {
   sku_name            = "Basic"
 }
 
-
 resource "azurerm_resource_group" "azureInfra" {
   name     = "azureInfra"
   location = "West Europe"
