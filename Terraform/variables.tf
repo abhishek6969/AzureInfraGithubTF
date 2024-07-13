@@ -15,3 +15,13 @@ variable "worker_groups" {
     }
   }
 }
+variable "csv_file" {
+  description = "Path to the CSV file containing parameters"
+  default     = "parameters.csv"
+}
+
+locals {
+  csv_data = csvdecode(file(var.csv_file))
+  workspace_name = local.csv_data[0].workspace_name
+  automation_account_name = local.csv_data[0].automation_account_name
+}

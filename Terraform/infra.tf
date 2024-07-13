@@ -1,7 +1,7 @@
 
 
 resource "azurerm_log_analytics_workspace" "test-law-lirook" {
-  name                = "test-law-lirook"
+  name                = local.workspace_name
   location            = azurerm_resource_group.azureInfra.location
   resource_group_name = azurerm_resource_group.azureInfra.name
   retention_in_days   = 30
