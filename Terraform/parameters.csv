@@ -1,2 +1,2 @@
-workspace_name,automation_account_name
-test-law-lirook,lirookAutomation
+workspace_name,automation_account_name,metric_dcr_name,RG_Name,RG_location
+test-law-lirook,lirookAutomation,example-dcr,azureInfra,West Europe

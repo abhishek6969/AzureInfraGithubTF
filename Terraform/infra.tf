@@ -8,7 +8,7 @@ resource "azurerm_log_analytics_workspace" "test-law-lirook" {
 }
 
 resource "azurerm_monitor_data_collection_rule" "example" {
-  name                = "example-dcr"
+  name                = local.metric_dcr_name
   resource_group_name = azurerm_resource_group.azureInfra.name
   location            = azurerm_resource_group.azureInfra.location
 

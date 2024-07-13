@@ -24,4 +24,8 @@ locals {
   csv_data = csvdecode(file(var.csv_file))
   workspace_name = local.csv_data[0].workspace_name
   automation_account_name = local.csv_data[0].automation_account_name
+  metric_dcr_name = local.csv_data[0].metric_dcr_name
+  RG_name = local.csv_data[0].RG_Name
+  RG_location = local.csv_data[0].RG_location
+
 }

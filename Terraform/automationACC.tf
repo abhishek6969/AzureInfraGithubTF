@@ -6,6 +6,6 @@ resource "azurerm_automation_account" "lirookAutomation" {
 }
 
 resource "azurerm_resource_group" "azureInfra" {
-  name     = "azureInfra"
-  location = "West Europe"
+  name     = local.RG_name
+  location = local.RG_location
 }
